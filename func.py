@@ -24,42 +24,27 @@ class binary_tree:
                 back_trav = temp_stack.pop()
                 root = back_trav
 
-    def is_instance_node(self, address):
-        return isinstance(address, Node)
-    def print_postorder_alg1(self, root, temp_stack):
-        dict = {}
+    def inorder_myalgo(self):
+        temp_stack = []
+        root = self.root
         while root is not None:
-            temp_stack.append(root.node_data)
-            dict[root.node_data] = root
-            print(f"{root} apended to stack")
-            print(f"stack status{temp_stack}")
-            if root.right is not None:
-                print(f"root.data appended right encourted {root.right.node_data}")
-                root.right.node_data = -root.right.node_data
-                temp_stack.append(int(root.right.node_data))
-                dict[root.right.node_data] = root
-                print(temp_stack)
-                print(f"Dictionary Status : {dict}")
-            root = root.left
-            if root is None:
-                print("root become none")
+            if root.left is not None:
+                temp_stack.append(root)
+                root = root.left
+            else:
+                print(root.node_data, end=", ")
+                if root.right is not None:
+                    temp_stack.append(root.right)
                 poped_ele = temp_stack.pop()
-                # if +ive elements are poped meaning roots are poped
-                print("isinstance")
-                print(f" is instance ? {poped_ele}", isinstance(poped_ele, int))
-                if isinstance(poped_ele, int):
-                    poped_ele = -poped_ele
-                    root = Node(poped_ele)
-                    print(f"an int object encountered{root}")
-                    if not temp_stack:
-                        break
+                print(poped_ele.node_data, end=", ")
+                if poped_ele.right is not None:
+                    root = poped_ele.right
                 else:
-                    print(poped_ele.node_data)
-                    poped_ele = temp_stack.pop()
-                    root = poped_ele
-                    print(f"an adress encounted{root}")
-                    if not temp_stack:
-                        break
+                    if len(temp_stack) >= 1:
+                        poped_ele = temp_stack.pop()
+                        root = poped_ele
+                    else:
+                        root = None
 
     def print_postorder_alg_rem(self):
         # this list will later converted into a stack
@@ -95,7 +80,8 @@ class binary_tree:
                     del dict[keys_stack[0]]
                     keys_stack.pop(0)
                     break
-
+    def is_instance_node(self, address):
+        return isinstance(address, Node)
 
     def take_input_lvl_wise(self):
         total_levels = int(input("Enter total levels of complete binary tree"))
@@ -105,15 +91,12 @@ class binary_tree:
         root_data = int(input("Enter data for root Node"))
         root = Node(root_data)
         self.root = root
-        print(root)
         my_queue.insert(0, root)
         self.my_list.append(root)
         nodes_processed = 1
         while nodes_processed != total_nodes:
-            print((my_queue))
             poped_ele = my_queue.pop(0)
             current = poped_ele
-            print(poped_ele)
             if current:
                 if current.left is None:
                     data_left = int(input("Enter data for nodes in level order"))
@@ -129,8 +112,6 @@ class binary_tree:
                     current.right = new_node_right
                     self.my_list.append(new_node_right)
                     nodes_processed += 1
-
-        print(self.my_list)
 
 
     def arr_rep_print(self):
@@ -161,73 +142,6 @@ class binary_tree:
         total_levels = np.log2(len(self.my_list) + 1)
         print(int(total_levels))
 
-
-
-    def inorder_myalgo(self):
-        temp_stack = []
-        root = self.root
-        while root is not None:
-            if root.left is not None:
-                temp_stack.append(root)
-                root = root.left
-            else:
-                print(root.node_data, end=", ")
-                if root.right is not None:
-                    temp_stack.append(root.right)
-                poped_ele = temp_stack.pop()
-                print(poped_ele.node_data, end=", ")
-                if poped_ele.right is not None:
-                    root = poped_ele.right
-                else:
-                    if len(temp_stack) >= 1:
-                        poped_ele = temp_stack.pop()
-                        root = poped_ele
-                    else:
-                        root = None
-
-    def print_preorder(self, root):
-        temp_stack = []
-        # printing first ever node
-        print(root.node_data)
-        while True:
-            while root.left is not None:
-                if root.right is not None:
-                    print(temp_stack)
-                    temp_stack.append(root.right)
-                    print(temp_stack)
-
-                # traversing through left of root
-                root = root.left
-                print(root.node_data)
-            if root.left is None:
-                if root.right is not None:
-                    root = root.right
-                elif root.right is None:
-                    print(temp_stack)
-                    back_trav = temp_stack.pop()
-                    print(temp_stack)
-                    print(back_trav.node_data)
-                    root = back_trav
-                    break
-
-    def print_inorder(self):
-        if self.root is None:
-            print("BST is empty.")
-            return
-
-        temp_stack = []
-        current = self.root
-
-        while current is not None or temp_stack:
-            while current is not None:
-                temp_stack.append(current)
-                current = current.left
-
-            current = temp_stack.pop()
-            print(current.node_data, end=", ")
-            current = current.right
-
-
 """
                1
              /  \
@@ -245,3 +159,82 @@ if __name__ == "__main__":
     root.right.right = Node(6)
     stack = []
     my_tree.print_postorder_alg_rem(root)
+
+
+# def print_postorder_alg1(self, root, temp_stack):
+#     dict = {}
+#     while root is not None:
+#         temp_stack.append(root.node_data)
+#         dict[root.node_data] = root
+#         print(f"{root} apended to stack")
+#         print(f"stack status{temp_stack}")
+#         if root.right is not None:
+#             print(f"root.data appended right encourted {root.right.node_data}")
+#             root.right.node_data = -root.right.node_data
+#             temp_stack.append(int(root.right.node_data))
+#             dict[root.right.node_data] = root
+#             print(temp_stack)
+#             print(f"Dictionary Status : {dict}")
+#         root = root.left
+#         if root is None:
+#             print("root become none")
+#             poped_ele = temp_stack.pop()
+#             # if +ive elements are poped meaning roots are poped
+#             print("isinstance")
+#             print(f" is instance ? {poped_ele}", isinstance(poped_ele, int))
+#             if isinstance(poped_ele, int):
+#                 poped_ele = -poped_ele
+#                 root = Node(poped_ele)
+#                 print(f"an int object encountered{root}")
+#                 if not temp_stack:
+#                     break
+#             else:
+#                 print(poped_ele.node_data)
+#                 poped_ele = temp_stack.pop()
+#                 root = poped_ele
+#                 print(f"an adress encounted{root}")
+#                 if not temp_stack:
+#                     break
+
+
+# def print_preorder(self, root):
+    #     temp_stack = []
+    #     # printing first ever node
+    #     print(root.node_data)
+    #     while True:
+    #         while root.left is not None:
+    #             if root.right is not None:
+    #                 print(temp_stack)
+    #                 temp_stack.append(root.right)
+    #                 print(temp_stack)
+    #
+    #             # traversing through left of root
+    #             root = root.left
+    #             print(root.node_data)
+    #         if root.left is None:
+    #             if root.right is not None:
+    #                 root = root.right
+    #             elif root.right is None:
+    #                 print(temp_stack)
+    #                 back_trav = temp_stack.pop()
+    #                 print(temp_stack)
+    #                 print(back_trav.node_data)
+    #                 root = back_trav
+    #                 break
+
+    # def print_inorder(self):
+    #     if self.root is None:
+    #         print("BST is empty.")
+    #         return
+    #
+    #     temp_stack = []
+    #     current = self.root
+    #
+    #     while current is not None or temp_stack:
+    #         while current is not None:
+    #             temp_stack.append(current)
+    #             current = current.left
+    #
+    #         current = temp_stack.pop()
+    #         print(current.node_data, end=", ")
+    #         current = current.right

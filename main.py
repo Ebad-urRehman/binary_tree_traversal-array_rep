@@ -8,6 +8,7 @@ E. Exit
 """
 my_tree = func.binary_tree()
 my_tree.take_input_lvl_wise()
+my_tree.arr_rep_print()
 while True:
     choice = input(Main_Menu_Msg)
     choice = choice.capitalize()
